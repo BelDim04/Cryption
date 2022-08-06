@@ -26,7 +26,7 @@ def bits_for_crypt(k, current):
 def change_pixels(data, img_data, k):
     data = data.encode('utf-8')
     img_data[0] = ((img_data[0] >> 4) << 4) + (k >> 4)
-    img_data[1] = ((img_data[0] >> 4) << 4) + (k % 16)
+    img_data[1] = ((img_data[1] >> 4) << 4) + (k % 16)
 
     for i, data_character in enumerate(data):
         for c in range(k):
@@ -40,7 +40,12 @@ def change_pixels(data, img_data, k):
 
 
 def crypt_steganography(data, image_name):
-    original = Image.open(image_name, 'r')
+    try:
+        original = Image.open(image_name, 'r', formats=('png',))
+    except Exception:
+        print('Only PNG allowed!')
+        return
+
     image = original.copy()
 
     data_sz = data_bytes_sz(data)
@@ -64,3 +69,17 @@ def crypt_steganography(data, image_name):
             cur += pixel_channels
 
     image.save('with_secret_' + image_name, quality=100)
+
+
+def createParser():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--in_file', required=True)
+    parser.add_argument('--data', required=True)
+
+    return parser
+
+
+if __name__ == '__main__':
+    parser = createParser()
+    namespace = parser.parse_args()
+    crypt_steganography(namespace.data, namespace.in_file)
