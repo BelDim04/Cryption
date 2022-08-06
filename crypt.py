@@ -2,6 +2,7 @@ from bs4 import UnicodeDammit
 import sys
 import argparse
 
+
 def chr_shift(c, key):
     if 'A' <= c <= 'Z':
         first = 'A'
