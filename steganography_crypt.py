@@ -16,7 +16,7 @@ def bytes_to_crypt_byte(data_sz, image_sz):
 
 
 def is_steganography_possible(k):
-    return k >= 2
+    return k >= 3
 
 
 def bits_for_crypt(k, current):
